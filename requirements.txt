@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+kubernetes
+asyncpg
+pydantic
+SQLAlchemy
+psycopg2-binary
+prometheus_client

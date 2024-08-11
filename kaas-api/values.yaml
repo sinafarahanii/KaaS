@@ -1,0 +1,25 @@
+app:
+  name: kaas-api
+  group: app
+  replicaCount: 1
+  container:
+    image: yeetffs/cc-project:meow
+    port: 8000
+    config: []
+    env:
+       - key: key
+         value: value
+    imagePullPolicy: Always
+  service:
+    type: LoadBalancer
+    port: 8000
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 100m
+      memory: 128Mi
+
+ingress:
+  enabled: false

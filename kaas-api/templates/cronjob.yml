@@ -1,0 +1,36 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: health-check-cronjob
+spec:
+  schedule: "1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: health-check
+            image: python:3.12.4-slim
+            env:
+            - name: POSTGRESQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgresql-secret
+                  key: POSTGRESQL_PASSWORD
+            - name: POSTGRESQL_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: postgresql-secret
+                  key: POSTGRESQL_USERNAME
+            - name: POSTGRESQL_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: postgresql-secret
+                  key: POSTGRESQL_DATABASE
+            - name: POSTGRESQL_MASTER_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: postgresql-config
+                  key: POSTGRESQL_MASTER_HOST
+            command: ["python", "/health_check.py"]
+          restartPolicy: OnFailure

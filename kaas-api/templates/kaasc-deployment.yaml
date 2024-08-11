@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kaasc-deployment
+  namespace: default
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: kaasc
+  template:
+    metadata:
+      labels:
+        app: kaasc
+    spec:
+      containers:
+      - name: kaasc-container
+        image: yeetffs/cc-project:meow
+        ports:
+        - containerPort: 8080
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+          initialDelaySeconds: 15
+          periodSeconds: 20
+        startupProbe:
+          httpGet:
+            path: /start
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 10
